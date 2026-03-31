@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Learning Repository System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="components.css">
 </head>
@@ -54,10 +55,10 @@
                                 class="search-bar"
                                 placeholder="Search learning materials, subjects, or tags"
                             >
-                            <span class="search-icon">&#128270;</span>
+                            <span class="search-icon"><i class="bi bi-search" aria-hidden="true"></i></span>
                         </div>
                         <button id="mobileFilterToggle" class="mobile-filter-toggle" aria-label="Open filters" aria-expanded="false">
-                            <span class="slider-icon" aria-hidden="true"></span>
+                            <i class="bi bi-sliders2" aria-hidden="true"></i>
                         </button>
                     </div>
 
@@ -104,11 +105,20 @@
                 <section id="mobileFiltersSheet" class="mobile-filters-sheet" aria-label="Mobile Filters">
                     <div class="mobile-sheet-header">
                         <h3>Filters</h3>
-                        <button id="mobileFilterClose" class="mobile-sheet-close" aria-label="Close filters">✕</button>
+                        <button id="mobileFilterClose" class="mobile-sheet-close" aria-label="Close filters"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
                     </div>
+
+                    <div class="mobile-sheet-content">
 
                     <div class="mobile-filter-row">
                         <label for="mobileTypeFilter">Type</label>
+                        <div class="custom-mobile-select" data-target="mobileTypeFilter">
+                            <button type="button" class="custom-select-trigger" aria-expanded="false">
+                                <span>All Types</span>
+                                <i class="bi bi-chevron-down" aria-hidden="true"></i>
+                            </button>
+                            <div class="custom-select-menu" role="listbox" aria-label="Type"></div>
+                        </div>
                         <select id="mobileTypeFilter" class="filter-select">
                             <option value="">All Types</option>
                             <option value="Lesson">Lesson</option>
@@ -123,6 +133,13 @@
 
                     <div class="mobile-filter-row">
                         <label for="mobileDurationFilter">Duration</label>
+                        <div class="custom-mobile-select" data-target="mobileDurationFilter">
+                            <button type="button" class="custom-select-trigger" aria-expanded="false">
+                                <span>Any Duration</span>
+                                <i class="bi bi-chevron-down" aria-hidden="true"></i>
+                            </button>
+                            <div class="custom-select-menu" role="listbox" aria-label="Duration"></div>
+                        </div>
                         <select id="mobileDurationFilter" class="filter-select">
                             <option value="">Any Duration</option>
                             <option value="0-30">Under 30 min</option>
@@ -152,6 +169,7 @@
                         <button class="clear-tags-btn" id="mobileClearTagsBtn">Clear Tags</button>
                     </div>
                     <div class="tags-list" id="mobileTagsList"></div>
+                    </div>
                 </section>
 
                 <section class="materials-section">

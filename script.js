@@ -22,6 +22,13 @@ const mockAuthors = [
     'Daniel M. Flores'
 ];
 
+const categoryIconMap = {
+    'k12-senior': 'bi-mortarboard-fill',
+    'k12-junior': 'bi-journal-bookmark-fill',
+    elementary: 'bi-backpack2-fill',
+    als: 'bi-lightbulb-fill'
+};
+
 // Load data from JSON
 async function loadData() {
     try {
@@ -44,8 +51,86 @@ function initializeUI() {
     populateSubjectFilters();
     populateTags();
     setupEventListeners();
+    setupMobileCustomSelects();
     setupMobileFilterSheet();
     setupDesktopTagsToggle();
+}
+
+function closeAllMobileCustomSelects() {
+    document.querySelectorAll('.custom-mobile-select.open').forEach((wrapper) => {
+        wrapper.classList.remove('open');
+        const trigger = wrapper.querySelector('.custom-select-trigger');
+        if (trigger) trigger.setAttribute('aria-expanded', 'false');
+    });
+}
+
+function syncCustomSelectDisplay(selectId) {
+    const select = document.getElementById(selectId);
+    const wrapper = document.querySelector(`.custom-mobile-select[data-target="${selectId}"]`);
+    if (!select || !wrapper) return;
+
+    const triggerLabel = wrapper.querySelector('.custom-select-trigger span');
+    const options = wrapper.querySelectorAll('.custom-select-option');
+    const selectedOption = select.options[select.selectedIndex];
+
+    if (triggerLabel) {
+        triggerLabel.textContent = selectedOption ? selectedOption.textContent : '';
+    }
+
+    options.forEach((optionButton) => {
+        optionButton.classList.toggle('active', optionButton.dataset.value === select.value);
+    });
+}
+
+function setupMobileCustomSelects() {
+    const wrappers = Array.from(document.querySelectorAll('.custom-mobile-select'));
+
+    wrappers.forEach((wrapper) => {
+        const selectId = wrapper.dataset.target;
+        const select = document.getElementById(selectId);
+        const trigger = wrapper.querySelector('.custom-select-trigger');
+        const menu = wrapper.querySelector('.custom-select-menu');
+
+        if (!select || !trigger || !menu) return;
+
+        menu.innerHTML = Array.from(select.options)
+            .map((opt) => `<button type="button" class="custom-select-option" data-value="${opt.value}">${opt.textContent}</button>`)
+            .join('');
+
+        syncCustomSelectDisplay(selectId);
+
+        trigger.addEventListener('click', () => {
+            const willOpen = !wrapper.classList.contains('open');
+            closeAllMobileCustomSelects();
+            if (willOpen) {
+                wrapper.classList.add('open');
+                trigger.setAttribute('aria-expanded', 'true');
+            }
+        });
+
+        menu.addEventListener('click', (event) => {
+            const optionButton = event.target.closest('.custom-select-option');
+            if (!optionButton) return;
+
+            const nextValue = optionButton.dataset.value || '';
+            if (select.value !== nextValue) {
+                select.value = nextValue;
+                select.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+
+            syncCustomSelectDisplay(selectId);
+            closeAllMobileCustomSelects();
+        });
+
+        select.addEventListener('change', () => {
+            syncCustomSelectDisplay(selectId);
+        });
+    });
+
+    document.addEventListener('click', (event) => {
+        const insideCustom = event.target.closest('.custom-mobile-select');
+        if (!insideCustom) closeAllMobileCustomSelects();
+    });
 }
 
 // Populate categories in the sidebar
@@ -62,8 +147,9 @@ function populateCategories() {
             const categoryItem = document.createElement('div');
             categoryItem.className = 'category-item';
             categoryItem.dataset.categoryId = category.id;
+            const iconClass = categoryIconMap[category.id] || 'bi-bookmark-star-fill';
             categoryItem.innerHTML = `
-                <span class="category-icon">${category.icon}</span>
+                <span class="category-icon" aria-hidden="true"><i class="bi ${iconClass}"></i></span>
                 <span>${category.name}</span>
             `;
             categoryItem.addEventListener('click', () => {
@@ -339,7 +425,7 @@ function displayMaterials(materials) {
                 <div class="material-meta">
                     <span class="material-grade">${gradeLabel}</span>
                     <span class="material-type">${material.type}</span>
-                    <span class="material-duration">â±ï¸ ${material.duration}</span>
+                    <span class="material-duration"><i class="bi bi-clock" aria-hidden="true"></i> ${material.duration}</span>
                 </div>
                 <div class="material-tags">
                     ${material.tags.map(tag => `<span class="material-tag">${tag}</span>`).join('')}
@@ -396,6 +482,7 @@ function setupEventListeners() {
         typeFilter.addEventListener('change', (e) => {
             selectedFilters.type = e.target.value || null;
             if (mobileTypeFilter) mobileTypeFilter.value = e.target.value;
+            syncCustomSelectDisplay('mobileTypeFilter');
             applyFilters();
         });
     }
@@ -414,6 +501,7 @@ function setupEventListeners() {
         durationFilter.addEventListener('change', (e) => {
             selectedFilters.duration = e.target.value || null;
             if (mobileDurationFilter) mobileDurationFilter.value = e.target.value;
+            syncCustomSelectDisplay('mobileDurationFilter');
             applyFilters();
         });
     }
@@ -481,6 +569,7 @@ function setupMobileFilterSheet() {
 
     const closeSheet = () => {
         document.body.classList.remove('mobile-filters-open');
+        closeAllMobileCustomSelects();
         toggleBtn.setAttribute('aria-expanded', 'false');
     };
 

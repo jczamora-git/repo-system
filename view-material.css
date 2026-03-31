@@ -186,15 +186,92 @@ body {
     border: 1px solid #bfd3e2;
 }
 
-.breadcrumb {
+.breadcrumb-wrap {
     background: #f9fcff;
     border: 1px solid var(--line);
     border-radius: 12px;
     padding: 10px 14px;
     margin-bottom: 12px;
+    box-shadow: 0 8px 18px rgba(9, 45, 70, 0.06);
+}
+
+.breadcrumb-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.breadcrumb {
     font-size: 13px;
     color: #3e5f77;
-    box-shadow: 0 8px 18px rgba(9, 45, 70, 0.06);
+    min-width: 0;
+}
+
+.breadcrumb-toggle {
+    border: none;
+    background: transparent;
+    color: #1f5f8c;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.breadcrumb-toggle:hover {
+    color: #114869;
+}
+
+.breadcrumb-more {
+    margin-top: 10px;
+    border-top: 1px solid #d9e5ef;
+    padding-top: 10px;
+}
+
+.breadcrumb-group {
+    margin-bottom: 10px;
+}
+
+.breadcrumb-group:last-child {
+    margin-bottom: 0;
+}
+
+.breadcrumb-more h4 {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: var(--muted);
+    letter-spacing: 0.4px;
+    margin-bottom: 8px;
+}
+
+.breadcrumb-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.breadcrumb-tag {
+    text-decoration: none;
+    background: #e8f2fb;
+    border: 1px solid #c8dfef;
+    color: #225173;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 12px;
+    transition: all 0.2s ease;
+}
+
+.breadcrumb-tag:hover {
+    background: #dff0fc;
+    border-color: #b6d5ea;
+}
+
+.breadcrumb-tag.active {
+    background: #1a88c7;
+    border-color: #1a88c7;
+    color: #ffffff;
 }
 
 .crumb {
@@ -519,6 +596,11 @@ body {
     .breadcrumb {
         font-size: 12px;
         line-height: 1.5;
+    }
+
+    .breadcrumb-head {
+        flex-direction: column;
+        align-items: flex-start;
     }
 
     .action-btn { width: 100%; }

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Material Path</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="view-material.css">
     <link rel="stylesheet" href="components.css">
 </head>
@@ -20,7 +21,26 @@
             <button id="pathSearchBtn" class="action-btn primary">Find Material</button>
         </section>
 
-        <nav id="pathBreadcrumb" class="breadcrumb" aria-label="Breadcrumb"></nav>
+        <section class="breadcrumb-wrap">
+            <div class="breadcrumb-head">
+                <nav id="pathBreadcrumb" class="breadcrumb" aria-label="Breadcrumb"></nav>
+                <button id="pathBreadcrumbToggle" class="breadcrumb-toggle" type="button" aria-expanded="false" aria-controls="pathBreadcrumbMore">Show More</button>
+            </div>
+            <div id="pathBreadcrumbMore" class="breadcrumb-more" hidden>
+                <div class="breadcrumb-group">
+                    <h4>Categories</h4>
+                    <div id="pathBreadcrumbCategories" class="breadcrumb-tags"></div>
+                </div>
+                <div class="breadcrumb-group">
+                    <h4>Grades</h4>
+                    <div id="pathBreadcrumbGrades" class="breadcrumb-tags"></div>
+                </div>
+                <div class="breadcrumb-group">
+                    <h4>Subjects</h4>
+                    <div id="pathBreadcrumbSubjects" class="breadcrumb-tags"></div>
+                </div>
+            </div>
+        </section>
 
         <section class="panel">
             <div class="list-head">

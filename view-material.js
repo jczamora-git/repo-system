@@ -25,6 +25,30 @@ const mockResources = [
 
 let materialsCache = [];
 
+const gradeMapByCategory = {
+    'k12-senior': [
+        { label: 'G11', value: 'Grade 11' },
+        { label: 'G12', value: 'Grade 12' }
+    ],
+    'k12-junior': [
+        { label: 'G7', value: 'Grade 7' },
+        { label: 'G8', value: 'Grade 8' },
+        { label: 'G9', value: 'Grade 9' },
+        { label: 'G10', value: 'Grade 10' }
+    ],
+    elementary: [
+        { label: 'G1', value: 'Grade 1' },
+        { label: 'G2', value: 'Grade 2' },
+        { label: 'G3', value: 'Grade 3' },
+        { label: 'G4', value: 'Grade 4' },
+        { label: 'G5', value: 'Grade 5' },
+        { label: 'G6', value: 'Grade 6' }
+    ],
+    als: [
+        { label: 'ALS', value: 'Grade ALS' }
+    ]
+};
+
 async function loadMaterialDetails() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
@@ -38,6 +62,7 @@ async function loadMaterialDetails() {
         const response = await fetch('data.json');
         const data = await response.json();
         materialsCache = data.materials || [];
+        const categories = data.categories || [];
 
         initMaterialFinder(materialsCache, id);
 
@@ -48,6 +73,8 @@ async function loadMaterialDetails() {
         }
 
         renderBreadcrumb(material);
+        renderBreadcrumbFilters(categories, materialsCache, material);
+        setupBreadcrumbMoreToggle('breadcrumbToggle', 'breadcrumbMore');
         renderMaterial(material);
         renderRecommended(material, materialsCache);
         bindActions(material);
@@ -272,6 +299,86 @@ function renderBreadcrumb(material) {
         .join('');
 }
 
+function buildPathHref(category, grade, subject) {
+    const params = new URLSearchParams();
+    if (category) params.set('category', category);
+    if (grade) params.set('grade', grade);
+    if (subject) params.set('subject', subject);
+    return `material-path.html?${params.toString()}`;
+}
+
+function getGradeOptions(categoryId) {
+    return gradeMapByCategory[categoryId] || [];
+}
+
+function renderBreadcrumbFilters(categories, allMaterials, material) {
+    const categoryContainer = document.getElementById('breadcrumbCategories');
+    const gradeContainer = document.getElementById('breadcrumbGrades');
+    const subjectContainer = document.getElementById('breadcrumbSubjects');
+
+    if (!categoryContainer || !gradeContainer || !subjectContainer) return;
+
+    const selectedCategory = material.category;
+    const selectedGrade = getGradeLabel(material);
+    const selectedSubject = material.subject;
+
+    categoryContainer.innerHTML = categories
+        .map((category) => {
+            const href = buildPathHref(category.id);
+            const activeClass = category.id === selectedCategory ? ' active' : '';
+            return `<a class="breadcrumb-tag${activeClass}" href="${href}">${escapeHtml(category.name)}</a>`;
+        })
+        .join('');
+
+    const gradeOptions = getGradeOptions(selectedCategory);
+    gradeContainer.innerHTML = gradeOptions
+        .map((grade) => {
+            const href = buildPathHref(selectedCategory, grade.value);
+            const activeClass = grade.value === selectedGrade ? ' active' : '';
+            return `<a class="breadcrumb-tag${activeClass}" href="${href}">${escapeHtml(grade.label)}</a>`;
+        })
+        .join('');
+
+    const subjectSet = new Set(
+        allMaterials
+            .filter((item) => item.category === selectedCategory)
+            .filter((item) => !selectedGrade || getGradeLabel(item) === selectedGrade)
+            .map((item) => item.subject)
+    );
+
+    const subjects = Array.from(subjectSet).sort();
+    subjectContainer.innerHTML = subjects
+        .map((subject) => {
+            const href = buildPathHref(selectedCategory, selectedGrade, subject);
+            const activeClass = subject === selectedSubject ? ' active' : '';
+            return `<a class="breadcrumb-tag${activeClass}" href="${href}">${escapeHtml(subject)}</a>`;
+        })
+        .join('');
+}
+
+function setupBreadcrumbMoreToggle(toggleId, panelId) {
+    const toggle = document.getElementById(toggleId);
+    const panel = document.getElementById(panelId);
+    if (!toggle || !panel) return;
+
+    const sync = () => {
+        const expanded = !panel.hasAttribute('hidden');
+        toggle.textContent = expanded ? 'Show Less' : 'Show More';
+        toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    };
+
+    sync();
+
+    toggle.addEventListener('click', () => {
+        if (panel.hasAttribute('hidden')) {
+            panel.removeAttribute('hidden');
+        } else {
+            panel.setAttribute('hidden', 'hidden');
+        }
+        sync();
+    });
+}
+
 function renderMaterial(material) {
     const author = material.author || getMockAuthor(material.id);
     const year = material.year || getMockYear(material.id);
@@ -375,7 +482,8 @@ function escapeHtml(value) {
 
 function showNotFound() {
     document.getElementById('detailsContent').style.display = 'none';
-    document.getElementById('breadcrumb').style.display = 'none';
+    const breadcrumbWrap = document.querySelector('.breadcrumb-wrap');
+    if (breadcrumbWrap) breadcrumbWrap.style.display = 'none';
     document.querySelector('.finder-bar').style.display = 'none';
     document.getElementById('notFound').style.display = 'block';
 }
