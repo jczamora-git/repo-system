@@ -85,6 +85,8 @@
                                 <option value="50+">Over 50 min</option>
                             </select>
                         </div>
+
+                        <button id="toggleTagsBtn" class="tag-toggle-btn" type="button" aria-expanded="false">Show Tags</button>
                     </div>
                 </section>
 
@@ -129,8 +131,24 @@
                         </select>
                     </div>
 
+                    <div class="mobile-filter-block">
+                        <h4>Categories</h4>
+                        <div class="categories-list" id="mobileCategoriesList"></div>
+                    </div>
+
+                    <div class="mobile-filter-block">
+                        <h4>Grade Levels</h4>
+                        <div class="grade-filters" id="mobileGradeFilters"></div>
+                    </div>
+
+                    <div class="mobile-filter-block">
+                        <h4>Subjects</h4>
+                        <div class="subject-filters" id="mobileSubjectFilters"></div>
+                    </div>
+
                     <div class="mobile-tags-headline">
                         <h4>Tags</h4>
+                        <button id="mobileToggleTagsBtn" class="mobile-link-toggle" type="button" aria-expanded="false">Show Tags</button>
                         <button class="clear-tags-btn" id="mobileClearTagsBtn">Clear Tags</button>
                     </div>
                     <div class="tags-list" id="mobileTagsList"></div>

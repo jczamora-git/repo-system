@@ -45,42 +45,46 @@ function initializeUI() {
     populateTags();
     setupEventListeners();
     setupMobileFilterSheet();
+    setupDesktopTagsToggle();
 }
 
 // Populate categories in the sidebar
 function populateCategories() {
     const categoriesList = document.getElementById('categoriesList');
-    categoriesList.innerHTML = '';
+    const mobileCategoriesList = document.getElementById('mobileCategoriesList');
+    const targets = [categoriesList, mobileCategoriesList].filter(Boolean);
+    targets.forEach(target => {
+        target.innerHTML = '';
+    });
 
     allCategories.forEach(category => {
-        const categoryItem = document.createElement('div');
-        categoryItem.className = 'category-item';
-        categoryItem.innerHTML = `
-            <span class="category-icon">${category.icon}</span>
-            <span>${category.name}</span>
-        `;
-        categoryItem.addEventListener('click', () => {
-            const wasActive = categoryItem.classList.contains('active');
-
-            document.querySelectorAll('.category-item').forEach(item => {
-                item.classList.remove('active');
+        targets.forEach(target => {
+            const categoryItem = document.createElement('div');
+            categoryItem.className = 'category-item';
+            categoryItem.dataset.categoryId = category.id;
+            categoryItem.innerHTML = `
+                <span class="category-icon">${category.icon}</span>
+                <span>${category.name}</span>
+            `;
+            categoryItem.addEventListener('click', () => {
+                const nextCategory = selectedFilters.category === category.id ? null : category.id;
+                updateCategoryFilter(nextCategory);
             });
-
-            if (!wasActive) {
-                categoryItem.classList.add('active');
-                updateCategoryFilter(category.id);
-            } else {
-                updateCategoryFilter(null);
-            }
+            target.appendChild(categoryItem);
         });
-        categoriesList.appendChild(categoryItem);
     });
+
+    syncCategoryActiveStates();
 }
 
 // Populate grade filters
 function populateGradeFilters() {
     const gradeFilters = document.getElementById('gradeFilters');
-    gradeFilters.innerHTML = '';
+    const mobileGradeFilters = document.getElementById('mobileGradeFilters');
+    const targets = [gradeFilters, mobileGradeFilters].filter(Boolean);
+    targets.forEach(target => {
+        target.innerHTML = '';
+    });
 
     const grades = new Set();
     allCategories.forEach(category => {
@@ -92,31 +96,30 @@ function populateGradeFilters() {
     });
 
     Array.from(grades).sort((a, b) => getGradeSortValue(a) - getGradeSortValue(b)).forEach(grade => {
-        const gradeFilter = document.createElement('div');
-        gradeFilter.className = 'grade-filter';
-        gradeFilter.textContent = grade;
-        gradeFilter.addEventListener('click', () => {
-            const wasActive = gradeFilter.classList.contains('active');
-
-            document.querySelectorAll('.grade-filter').forEach(item => {
-                item.classList.remove('active');
+        targets.forEach(target => {
+            const gradeFilter = document.createElement('div');
+            gradeFilter.className = 'grade-filter';
+            gradeFilter.textContent = grade;
+            gradeFilter.dataset.grade = grade;
+            gradeFilter.addEventListener('click', () => {
+                const nextGrade = selectedFilters.grade === grade ? null : grade;
+                updateGradeFilter(nextGrade);
             });
-
-            if (!wasActive) {
-                gradeFilter.classList.add('active');
-                updateGradeFilter(grade);
-            } else {
-                updateGradeFilter(null);
-            }
+            target.appendChild(gradeFilter);
         });
-        gradeFilters.appendChild(gradeFilter);
     });
+
+    syncGradeActiveStates();
 }
 
 // Populate subject filters
 function populateSubjectFilters() {
     const subjectFilters = document.getElementById('subjectFilters');
-    subjectFilters.innerHTML = '';
+    const mobileSubjectFilters = document.getElementById('mobileSubjectFilters');
+    const targets = [subjectFilters, mobileSubjectFilters].filter(Boolean);
+    targets.forEach(target => {
+        target.innerHTML = '';
+    });
 
     const subjects = new Set();
     allCategories.forEach(category => {
@@ -132,25 +135,20 @@ function populateSubjectFilters() {
     });
 
     Array.from(subjects).sort().forEach(subject => {
-        const subjectFilter = document.createElement('div');
-        subjectFilter.className = 'subject-filter';
-        subjectFilter.textContent = subject;
-        subjectFilter.addEventListener('click', () => {
-            const wasActive = subjectFilter.classList.contains('active');
-
-            document.querySelectorAll('.subject-filter').forEach(item => {
-                item.classList.remove('active');
+        targets.forEach(target => {
+            const subjectFilter = document.createElement('div');
+            subjectFilter.className = 'subject-filter';
+            subjectFilter.textContent = subject;
+            subjectFilter.dataset.subject = subject;
+            subjectFilter.addEventListener('click', () => {
+                const nextSubject = selectedFilters.subject === subject ? null : subject;
+                updateSubjectFilter(nextSubject);
             });
-
-            if (!wasActive) {
-                subjectFilter.classList.add('active');
-                updateSubjectFilter(subject);
-            } else {
-                updateSubjectFilter(null);
-            }
+            target.appendChild(subjectFilter);
         });
-        subjectFilters.appendChild(subjectFilter);
     });
+
+    syncSubjectActiveStates();
 }
 
 // Populate tags
@@ -186,17 +184,38 @@ function populateTags() {
 // Update filter functions
 function updateCategoryFilter(categoryId) {
     selectedFilters.category = categoryId;
+    syncCategoryActiveStates();
     applyFilters();
 }
 
 function updateGradeFilter(grade) {
     selectedFilters.grade = grade;
+    syncGradeActiveStates();
     applyFilters();
 }
 
 function updateSubjectFilter(subject) {
     selectedFilters.subject = subject;
+    syncSubjectActiveStates();
     applyFilters();
+}
+
+function syncCategoryActiveStates() {
+    document.querySelectorAll('.category-item').forEach((item) => {
+        item.classList.toggle('active', item.dataset.categoryId === selectedFilters.category);
+    });
+}
+
+function syncGradeActiveStates() {
+    document.querySelectorAll('.grade-filter').forEach((item) => {
+        item.classList.toggle('active', item.dataset.grade === selectedFilters.grade);
+    });
+}
+
+function syncSubjectActiveStates() {
+    document.querySelectorAll('.subject-filter').forEach((item) => {
+        item.classList.toggle('active', item.dataset.subject === selectedFilters.subject);
+    });
 }
 
 function updateTagFilter(tag) {
@@ -221,9 +240,10 @@ function syncTagActiveStates() {
 function updateClearTagsButton() {
     const clearBtn = document.getElementById('clearTagsBtn');
     const mobileClearBtn = document.getElementById('mobileClearTagsBtn');
+    const showMobileClear = selectedFilters.tags.size > 0 && document.body.classList.contains('mobile-tags-visible');
     if (selectedFilters.tags.size > 0) {
         if (clearBtn) clearBtn.style.display = 'inline-block';
-        if (mobileClearBtn) mobileClearBtn.style.display = 'inline-block';
+        if (mobileClearBtn) mobileClearBtn.style.display = showMobileClear ? 'inline-block' : 'none';
     } else {
         if (clearBtn) clearBtn.style.display = 'none';
         if (mobileClearBtn) mobileClearBtn.style.display = 'none';
@@ -441,10 +461,18 @@ function setupMobileFilterSheet() {
     const toggleBtn = document.getElementById('mobileFilterToggle');
     const closeBtn = document.getElementById('mobileFilterClose');
     const backdrop = document.getElementById('mobileFilterBackdrop');
+    const mobileTagToggleBtn = document.getElementById('mobileToggleTagsBtn');
 
     if (!toggleBtn || !closeBtn || !backdrop) {
         return;
     }
+
+    const syncMobileTagToggleLabel = () => {
+        if (!mobileTagToggleBtn) return;
+        const isVisible = document.body.classList.contains('mobile-tags-visible');
+        mobileTagToggleBtn.textContent = isVisible ? 'Hide Tags' : 'Show Tags';
+        mobileTagToggleBtn.setAttribute('aria-expanded', isVisible ? 'true' : 'false');
+    };
 
     const openSheet = () => {
         document.body.classList.add('mobile-filters-open');
@@ -455,6 +483,15 @@ function setupMobileFilterSheet() {
         document.body.classList.remove('mobile-filters-open');
         toggleBtn.setAttribute('aria-expanded', 'false');
     };
+
+    if (mobileTagToggleBtn) {
+        syncMobileTagToggleLabel();
+        mobileTagToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('mobile-tags-visible');
+            syncMobileTagToggleLabel();
+            updateClearTagsButton();
+        });
+    }
 
     toggleBtn.addEventListener('click', () => {
         if (document.body.classList.contains('mobile-filters-open')) {
@@ -472,7 +509,30 @@ function setupMobileFilterSheet() {
     });
 
     window.addEventListener('resize', () => {
-        if (window.innerWidth > 780) closeSheet();
+        if (window.innerWidth > 780) {
+            document.body.classList.remove('mobile-tags-visible');
+            syncMobileTagToggleLabel();
+            updateClearTagsButton();
+            closeSheet();
+        }
+    });
+}
+
+function setupDesktopTagsToggle() {
+    const toggleBtn = document.getElementById('toggleTagsBtn');
+    if (!toggleBtn) return;
+
+    const syncLabel = () => {
+        const isVisible = document.body.classList.contains('tags-visible');
+        toggleBtn.textContent = isVisible ? 'Hide Tags' : 'Show Tags';
+        toggleBtn.setAttribute('aria-expanded', isVisible ? 'true' : 'false');
+    };
+
+    syncLabel();
+
+    toggleBtn.addEventListener('click', () => {
+        document.body.classList.toggle('tags-visible');
+        syncLabel();
     });
 }
 
