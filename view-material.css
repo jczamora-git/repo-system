@@ -448,9 +448,42 @@ body {
     border: 1px solid #d1dfeb;
     border-radius: 12px;
     background: #f8fbff;
-    min-height: 420px;
+    min-height: 560px;
     padding: 14px;
     margin-bottom: 12px;
+}
+
+.preview-viewport.embedded-mode {
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+    background: #d5e1ec;
+}
+
+.embedded-preview-iframe {
+    display: block;
+    width: 100%;
+    min-height: 640px;
+    height: 80vh;
+    border: 0;
+    background: #ffffff;
+}
+
+.embedded-open-link {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    background: rgba(13, 54, 83, 0.85);
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 9px;
+    border-radius: 8px;
+}
+
+.embedded-open-link:hover {
+    background: rgba(9, 45, 70, 0.95);
 }
 
 .mock-document {
@@ -609,7 +642,12 @@ body {
 
     .overview-title { font-size: 25px; }
 
-    .preview-viewport { min-height: 320px; }
+    .preview-viewport { min-height: 420px; }
+
+    .embedded-preview-iframe {
+        min-height: 500px;
+        height: 68vh;
+    }
 
     .mock-document { min-height: 280px; }
 

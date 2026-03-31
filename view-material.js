@@ -23,6 +23,13 @@ const mockResources = [
     'Assessment Quiz (PDF)'
 ];
 
+const embeddedPreviewByMaterialId = {
+    'mat-001': {
+        embedUrl: 'https://docs.google.com/document/d/1FK80P5suvZmiXREBQuu8w-wODbgJY-qIuWdQERN_fQ0/preview?rm=minimal',
+        openUrl: 'https://docs.google.com/document/d/1FK80P5suvZmiXREBQuu8w-wODbgJY-qIuWdQERN_fQ0/edit?tab=t.0'
+    }
+};
+
 let materialsCache = [];
 
 const gradeMapByCategory = {
@@ -423,7 +430,28 @@ function renderMaterial(material) {
         <span>Duration: <strong>${escapeHtml(material.duration)}</strong></span>
     `;
 
-    document.getElementById('previewViewport').innerHTML = `
+    const previewViewport = document.getElementById('previewViewport');
+    const embedConfig = embeddedPreviewByMaterialId[material.id];
+
+    if (embedConfig && embedConfig.embedUrl) {
+        previewViewport.classList.add('embedded-mode');
+        previewViewport.innerHTML = `
+            <iframe
+                class="embedded-preview-iframe"
+                src="${embedConfig.embedUrl}"
+                title="${escapeHtml(material.title)} preview"
+                loading="lazy"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allow="fullscreen"
+            ></iframe>
+            <a class="embedded-open-link" href="${embedConfig.openUrl}" target="_blank" rel="noopener noreferrer">Open full document</a>
+        `;
+        return;
+    }
+
+    previewViewport.classList.remove('embedded-mode');
+
+    previewViewport.innerHTML = `
         <div class="mock-document">
             <h4>${escapeHtml(material.title)}</h4>
             <p>Preview mode for ${fileType} document.</p>
