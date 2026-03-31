@@ -44,6 +44,7 @@ function initializeUI() {
     populateSubjectFilters();
     populateTags();
     setupEventListeners();
+    setupMobileFilterSheet();
 }
 
 // Populate categories in the sidebar
@@ -155,7 +156,9 @@ function populateSubjectFilters() {
 // Populate tags
 function populateTags() {
     const tagsList = document.getElementById('tagsList');
-    tagsList.innerHTML = '';
+    const mobileTagsList = document.getElementById('mobileTagsList');
+    if (tagsList) tagsList.innerHTML = '';
+    if (mobileTagsList) mobileTagsList.innerHTML = '';
 
     const tagsCount = {};
     allMaterials.forEach(material => {
@@ -165,14 +168,18 @@ function populateTags() {
     });
 
     Object.keys(tagsCount).sort().forEach(tag => {
-        const tagElement = document.createElement('div');
-        tagElement.className = 'tag';
-        tagElement.innerHTML = `${tag} <span class="tag-count">(${tagsCount[tag]})</span>`;
-        tagElement.addEventListener('click', () => {
-            tagElement.classList.toggle('active');
-            updateTagFilter(tag);
-        });
-        tagsList.appendChild(tagElement);
+        const createTagElement = () => {
+            const tagElement = document.createElement('div');
+            tagElement.className = 'tag';
+            tagElement.innerHTML = `${tag} <span class="tag-count">(${tagsCount[tag]})</span>`;
+            tagElement.addEventListener('click', () => {
+                updateTagFilter(tag);
+            });
+            return tagElement;
+        };
+
+        if (tagsList) tagsList.appendChild(createTagElement());
+        if (mobileTagsList) mobileTagsList.appendChild(createTagElement());
     });
 }
 
@@ -198,16 +205,28 @@ function updateTagFilter(tag) {
     } else {
         selectedFilters.tags.add(tag);
     }
+    syncTagActiveStates();
     updateClearTagsButton();
     applyFilters();
 }
 
+function syncTagActiveStates() {
+    document.querySelectorAll('.tag').forEach((tagEl) => {
+        const rawText = tagEl.textContent || '';
+        const tagName = rawText.split('(')[0].trim();
+        tagEl.classList.toggle('active', selectedFilters.tags.has(tagName));
+    });
+}
+
 function updateClearTagsButton() {
     const clearBtn = document.getElementById('clearTagsBtn');
+    const mobileClearBtn = document.getElementById('mobileClearTagsBtn');
     if (selectedFilters.tags.size > 0) {
-        clearBtn.style.display = 'inline-block';
+        if (clearBtn) clearBtn.style.display = 'inline-block';
+        if (mobileClearBtn) mobileClearBtn.style.display = 'inline-block';
     } else {
-        clearBtn.style.display = 'none';
+        if (clearBtn) clearBtn.style.display = 'none';
+        if (mobileClearBtn) mobileClearBtn.style.display = 'none';
     }
 }
 
@@ -351,26 +370,54 @@ function setupEventListeners() {
     });
 
     // Type filter
-    document.getElementById('typeFilter').addEventListener('change', (e) => {
-        selectedFilters.type = e.target.value || null;
-        applyFilters();
-    });
+    const typeFilter = document.getElementById('typeFilter');
+    const mobileTypeFilter = document.getElementById('mobileTypeFilter');
+    if (typeFilter) {
+        typeFilter.addEventListener('change', (e) => {
+            selectedFilters.type = e.target.value || null;
+            if (mobileTypeFilter) mobileTypeFilter.value = e.target.value;
+            applyFilters();
+        });
+    }
+    if (mobileTypeFilter) {
+        mobileTypeFilter.addEventListener('change', (e) => {
+            selectedFilters.type = e.target.value || null;
+            if (typeFilter) typeFilter.value = e.target.value;
+            applyFilters();
+        });
+    }
 
     // Duration filter
-    document.getElementById('durationFilter').addEventListener('change', (e) => {
-        selectedFilters.duration = e.target.value || null;
-        applyFilters();
-    });
+    const durationFilter = document.getElementById('durationFilter');
+    const mobileDurationFilter = document.getElementById('mobileDurationFilter');
+    if (durationFilter) {
+        durationFilter.addEventListener('change', (e) => {
+            selectedFilters.duration = e.target.value || null;
+            if (mobileDurationFilter) mobileDurationFilter.value = e.target.value;
+            applyFilters();
+        });
+    }
+    if (mobileDurationFilter) {
+        mobileDurationFilter.addEventListener('change', (e) => {
+            selectedFilters.duration = e.target.value || null;
+            if (durationFilter) durationFilter.value = e.target.value;
+            applyFilters();
+        });
+    }
 
     // Clear tags button
-    document.getElementById('clearTagsBtn').addEventListener('click', () => {
+    const clearTagsBtn = document.getElementById('clearTagsBtn');
+    const mobileClearTagsBtn = document.getElementById('mobileClearTagsBtn');
+
+    const clearTags = () => {
         selectedFilters.tags.clear();
-        document.querySelectorAll('.tag').forEach(tag => {
-            tag.classList.remove('active');
-        });
+        syncTagActiveStates();
         updateClearTagsButton();
         applyFilters();
-    });
+    };
+
+    if (clearTagsBtn) clearTagsBtn.addEventListener('click', clearTags);
+    if (mobileClearTagsBtn) mobileClearTagsBtn.addEventListener('click', clearTags);
 
     // Material action handlers
     document.addEventListener('click', (e) => {
@@ -387,6 +434,45 @@ function setupEventListeners() {
                 alert(`Download started: ${title}\n\nThis would download the selected learning material file.`);
             }
         }
+    });
+}
+
+function setupMobileFilterSheet() {
+    const toggleBtn = document.getElementById('mobileFilterToggle');
+    const closeBtn = document.getElementById('mobileFilterClose');
+    const backdrop = document.getElementById('mobileFilterBackdrop');
+
+    if (!toggleBtn || !closeBtn || !backdrop) {
+        return;
+    }
+
+    const openSheet = () => {
+        document.body.classList.add('mobile-filters-open');
+        toggleBtn.setAttribute('aria-expanded', 'true');
+    };
+
+    const closeSheet = () => {
+        document.body.classList.remove('mobile-filters-open');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+    };
+
+    toggleBtn.addEventListener('click', () => {
+        if (document.body.classList.contains('mobile-filters-open')) {
+            closeSheet();
+        } else {
+            openSheet();
+        }
+    });
+
+    closeBtn.addEventListener('click', closeSheet);
+    backdrop.addEventListener('click', closeSheet);
+
+    window.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') closeSheet();
+    });
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 780) closeSheet();
     });
 }
 

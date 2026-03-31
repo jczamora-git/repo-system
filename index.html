@@ -46,14 +46,19 @@
         <div class="container">
             <main class="main-panel">
                 <section class="content-header">
-                    <div class="search-bar-container">
-                        <input
-                            type="text"
-                            id="searchInput"
-                            class="search-bar"
-                            placeholder="Search learning materials, subjects, or tags"
-                        >
-                        <span class="search-icon">&#128270;</span>
+                    <div class="search-controls">
+                        <div class="search-bar-container">
+                            <input
+                                type="text"
+                                id="searchInput"
+                                class="search-bar"
+                                placeholder="Search learning materials, subjects, or tags"
+                            >
+                            <span class="search-icon">&#128270;</span>
+                        </div>
+                        <button id="mobileFilterToggle" class="mobile-filter-toggle" aria-label="Open filters" aria-expanded="false">
+                            <span class="slider-icon" aria-hidden="true"></span>
+                        </button>
                     </div>
 
                     <div class="filters-container">
@@ -91,6 +96,44 @@
                     <div class="tags-list" id="tagsList">
                         <!-- Tags will be populated by JavaScript -->
                     </div>
+                </section>
+
+                <div id="mobileFilterBackdrop" class="mobile-filter-backdrop"></div>
+                <section id="mobileFiltersSheet" class="mobile-filters-sheet" aria-label="Mobile Filters">
+                    <div class="mobile-sheet-header">
+                        <h3>Filters</h3>
+                        <button id="mobileFilterClose" class="mobile-sheet-close" aria-label="Close filters">✕</button>
+                    </div>
+
+                    <div class="mobile-filter-row">
+                        <label for="mobileTypeFilter">Type</label>
+                        <select id="mobileTypeFilter" class="filter-select">
+                            <option value="">All Types</option>
+                            <option value="Lesson">Lesson</option>
+                            <option value="Interactive Lesson">Interactive Lesson</option>
+                            <option value="Exercise">Exercise</option>
+                            <option value="Quiz">Quiz</option>
+                            <option value="Interactive Game">Interactive Game</option>
+                            <option value="Workshop">Workshop</option>
+                            <option value="Practical Lesson">Practical Lesson</option>
+                        </select>
+                    </div>
+
+                    <div class="mobile-filter-row">
+                        <label for="mobileDurationFilter">Duration</label>
+                        <select id="mobileDurationFilter" class="filter-select">
+                            <option value="">Any Duration</option>
+                            <option value="0-30">Under 30 min</option>
+                            <option value="30-50">30-50 min</option>
+                            <option value="50+">Over 50 min</option>
+                        </select>
+                    </div>
+
+                    <div class="mobile-tags-headline">
+                        <h4>Tags</h4>
+                        <button class="clear-tags-btn" id="mobileClearTagsBtn">Clear Tags</button>
+                    </div>
+                    <div class="tags-list" id="mobileTagsList"></div>
                 </section>
 
                 <section class="materials-section">
