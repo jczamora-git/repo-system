@@ -1,0 +1,403 @@
+{
+  "categories": [
+    {
+      "id": "k12-senior",
+      "name": "K-12 (Senior High)",
+      "icon": "📚",
+      "subcategories": [
+        {
+          "id": "grade-11",
+          "name": "Grade 11",
+          "subjects": [
+            { "id": "math-11", "name": "Mathematics" },
+            { "id": "english-11", "name": "English" },
+            { "id": "science-11", "name": "Science" },
+            { "id": "history-11", "name": "History" }
+          ]
+        },
+        {
+          "id": "grade-12",
+          "name": "Grade 12",
+          "subjects": [
+            { "id": "math-12", "name": "Mathematics" },
+            { "id": "english-12", "name": "English" },
+            { "id": "science-12", "name": "Science" },
+            { "id": "history-12", "name": "History" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "k12-junior",
+      "name": "K-12 (Junior High)",
+      "icon": "📖",
+      "subcategories": [
+        {
+          "id": "grade-7",
+          "name": "Grade 7",
+          "subjects": [
+            { "id": "math-7", "name": "Mathematics" },
+            { "id": "english-7", "name": "English" },
+            { "id": "science-7", "name": "Science" },
+            { "id": "araling-panlipunan-7", "name": "Araling Panlipunan" }
+          ]
+        },
+        {
+          "id": "grade-8",
+          "name": "Grade 8",
+          "subjects": [
+            { "id": "math-8", "name": "Mathematics" },
+            { "id": "english-8", "name": "English" },
+            { "id": "science-8", "name": "Science" },
+            { "id": "araling-panlipunan-8", "name": "Araling Panlipunan" }
+          ]
+        },
+        {
+          "id": "grade-9",
+          "name": "Grade 9",
+          "subjects": [
+            { "id": "math-9", "name": "Mathematics" },
+            { "id": "english-9", "name": "English" },
+            { "id": "science-9", "name": "Science" },
+            { "id": "araling-panlipunan-9", "name": "Araling Panlipunan" }
+          ]
+        },
+        {
+          "id": "grade-10",
+          "name": "Grade 10",
+          "subjects": [
+            { "id": "math-10", "name": "Mathematics" },
+            { "id": "english-10", "name": "English" },
+            { "id": "science-10", "name": "Science" },
+            { "id": "araling-panlipunan-10", "name": "Araling Panlipunan" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "elementary",
+      "name": "Elementary",
+      "icon": "🎓",
+      "subcategories": [
+        {
+          "id": "grade-1",
+          "name": "Grade 1",
+          "subjects": [
+            { "id": "math-1", "name": "Mathematics" },
+            { "id": "english-1", "name": "English" },
+            { "id": "science-1", "name": "Science" },
+            { "id": "values-1", "name": "Values Education" }
+          ]
+        },
+        {
+          "id": "grade-2",
+          "name": "Grade 2",
+          "subjects": [
+            { "id": "math-2", "name": "Mathematics" },
+            { "id": "english-2", "name": "English" },
+            { "id": "science-2", "name": "Science" },
+            { "id": "values-2", "name": "Values Education" }
+          ]
+        },
+        {
+          "id": "grade-3",
+          "name": "Grade 3",
+          "subjects": [
+            { "id": "math-3", "name": "Mathematics" },
+            { "id": "english-3", "name": "English" },
+            { "id": "science-3", "name": "Science" },
+            { "id": "values-3", "name": "Values Education" }
+          ]
+        },
+        {
+          "id": "grade-4",
+          "name": "Grade 4",
+          "subjects": [
+            { "id": "math-4", "name": "Mathematics" },
+            { "id": "english-4", "name": "English" },
+            { "id": "science-4", "name": "Science" },
+            { "id": "values-4", "name": "Values Education" }
+          ]
+        },
+        {
+          "id": "grade-5",
+          "name": "Grade 5",
+          "subjects": [
+            { "id": "math-5", "name": "Mathematics" },
+            { "id": "english-5", "name": "English" },
+            { "id": "science-5", "name": "Science" },
+            { "id": "values-5", "name": "Values Education" }
+          ]
+        },
+        {
+          "id": "grade-6",
+          "name": "Grade 6",
+          "subjects": [
+            { "id": "math-6", "name": "Mathematics" },
+            { "id": "english-6", "name": "English" },
+            { "id": "science-6", "name": "Science" },
+            { "id": "values-6", "name": "Values Education" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "als",
+      "name": "ALS (Alternative Learning System)",
+      "icon": "✨",
+      "subcategories": [
+        {
+          "id": "als-basic",
+          "name": "ALS - Literacy & Numeracy",
+          "subjects": [
+            { "id": "literacy-als", "name": "Literacy" },
+            { "id": "numeracy-als", "name": "Numeracy" },
+            { "id": "life-skills-als", "name": "Life Skills" }
+          ]
+        }
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "id": "mat-001",
+      "title": "Introduction to Quadratic Equations",
+      "description": "Learn the fundamentals of quadratic equations and how to solve them",
+      "category": "k12-senior",
+      "grade": "11",
+      "subject": "Mathematics",
+      "type": "Lesson",
+      "tags": ["algebra", "equations", "mathematics"],
+      "thumbnail": "📘",
+      "duration": "45 min"
+    },
+    {
+      "id": "mat-002",
+      "title": "English Grammar Basics",
+      "description": "Master the foundational rules of English grammar",
+      "category": "k12-senior",
+      "grade": "12",
+      "subject": "English",
+      "type": "Lesson",
+      "tags": ["grammar", "english", "language"],
+      "thumbnail": "📕",
+      "duration": "50 min"
+    },
+    {
+      "id": "mat-003",
+      "title": "The Solar System",
+      "description": "Explore the planets and celestial bodies in our solar system",
+      "category": "k12-senior",
+      "grade": "11",
+      "subject": "Science",
+      "type": "Interactive Lesson",
+      "tags": ["astronomy", "space", "science"],
+      "thumbnail": "🌍",
+      "duration": "60 min"
+    },
+    {
+      "id": "mat-004",
+      "title": "Philippine History - Pre-Colonial Era",
+      "description": "Discover the rich history of the Philippines before colonization",
+      "category": "k12-senior",
+      "grade": "11",
+      "subject": "History",
+      "type": "Lesson",
+      "tags": ["history", "philippines", "culture"],
+      "thumbnail": "🏛️",
+      "duration": "55 min"
+    },
+    {
+      "id": "mat-005",
+      "title": "Fractions and Decimals",
+      "description": "Understand fractions and how to convert them to decimals",
+      "category": "k12-junior",
+      "grade": "8",
+      "subject": "Mathematics",
+      "type": "Lesson",
+      "tags": ["fractions", "mathematics", "numbers"],
+      "thumbnail": "📗",
+      "duration": "40 min"
+    },
+    {
+      "id": "mat-006",
+      "title": "English Vocabulary Builder",
+      "description": "Expand your English vocabulary with common words and phrases",
+      "category": "k12-junior",
+      "grade": "8",
+      "subject": "English",
+      "type": "Exercise",
+      "tags": ["vocabulary", "english", "learning"],
+      "thumbnail": "📙",
+      "duration": "30 min"
+    },
+    {
+      "id": "mat-007",
+      "title": "Photosynthesis Process",
+      "description": "Learn how plants convert sunlight into energy",
+      "category": "k12-junior",
+      "grade": "7",
+      "subject": "Science",
+      "type": "Interactive Lesson",
+      "tags": ["biology", "science", "plants"],
+      "thumbnail": "🌱",
+      "duration": "45 min"
+    },
+    {
+      "id": "mat-008",
+      "title": "Southeast Asian Cultures",
+      "description": "Understand the diverse cultures of Southeast Asia",
+      "category": "k12-junior",
+      "grade": "9",
+      "subject": "Araling Panlipunan",
+      "type": "Lesson",
+      "tags": ["culture", "geography", "asia"],
+      "thumbnail": "🌏",
+      "duration": "50 min"
+    },
+    {
+      "id": "mat-009",
+      "title": "Basic Numbers and Counting",
+      "description": "Master the fundamentals of counting from 1-100",
+      "category": "elementary",
+      "grade": "1",
+      "subject": "Mathematics",
+      "type": "Interactive Game",
+      "tags": ["numbers", "counting", "math"],
+      "thumbnail": "🎲",
+      "duration": "25 min"
+    },
+    {
+      "id": "mat-010",
+      "title": "Alphabet Learning",
+      "description": "Learn to recognize and write the English alphabet",
+      "category": "elementary",
+      "grade": "1",
+      "subject": "English",
+      "type": "Lesson",
+      "tags": ["alphabet", "reading", "english"],
+      "thumbnail": "🔤",
+      "duration": "30 min"
+    },
+    {
+      "id": "mat-011",
+      "title": "Animals and Their Habitats",
+      "description": "Explore different animals and where they live",
+      "category": "elementary",
+      "grade": "2",
+      "subject": "Science",
+      "type": "Interactive Lesson",
+      "tags": ["animals", "nature", "science"],
+      "thumbnail": "🦁",
+      "duration": "35 min"
+    },
+    {
+      "id": "mat-012",
+      "title": "Values and Good Behavior",
+      "description": "Learn important values for a good life",
+      "category": "elementary",
+      "grade": "1",
+      "subject": "Values Education",
+      "type": "Lesson",
+      "tags": ["values", "behavior", "character"],
+      "thumbnail": "💝",
+      "duration": "25 min"
+    },
+    {
+      "id": "mat-013",
+      "title": "Addition and Subtraction",
+      "description": "Practice basic addition and subtraction skills",
+      "category": "elementary",
+      "grade": "3",
+      "subject": "Mathematics",
+      "type": "Exercise",
+      "tags": ["math", "arithmetic", "practice"],
+      "thumbnail": "🧮",
+      "duration": "40 min"
+    },
+    {
+      "id": "mat-014",
+      "title": "Reading Comprehension Skills",
+      "description": "Improve your ability to understand written texts",
+      "category": "elementary",
+      "grade": "4",
+      "subject": "English",
+      "type": "Lesson",
+      "tags": ["reading", "comprehension", "english"],
+      "thumbnail": "📖",
+      "duration": "45 min"
+    },
+    {
+      "id": "mat-015",
+      "title": "Basic Literacy Skills",
+      "description": "Essential reading and writing skills for beginners",
+      "category": "als",
+      "grade": "ALS",
+      "subject": "Literacy",
+      "type": "Lesson",
+      "tags": ["literacy", "reading", "writing"],
+      "thumbnail": "✏️",
+      "duration": "50 min"
+    },
+    {
+      "id": "mat-016",
+      "title": "Practical Math for Daily Life",
+      "description": "Learn math skills needed for everyday activities",
+      "category": "als",
+      "grade": "ALS",
+      "subject": "Numeracy",
+      "type": "Practical Lesson",
+      "tags": ["numeracy", "math", "practical"],
+      "thumbnail": "💰",
+      "duration": "55 min"
+    },
+    {
+      "id": "mat-017",
+      "title": "Life Skills and Wellness",
+      "description": "Important skills for personal development and health",
+      "category": "als",
+      "grade": "ALS",
+      "subject": "Life Skills",
+      "type": "Workshop",
+      "tags": ["life-skills", "wellness", "personal-development"],
+      "thumbnail": "🌟",
+      "duration": "60 min"
+    },
+    {
+      "id": "mat-018",
+      "title": "Geometry Basics",
+      "description": "Introduction to shapes, angles, and geometric principles",
+      "category": "k12-junior",
+      "grade": "8",
+      "subject": "Mathematics",
+      "type": "Lesson",
+      "tags": ["geometry", "shapes", "mathematics"],
+      "thumbnail": "📐",
+      "duration": "48 min"
+    },
+    {
+      "id": "mat-019",
+      "title": "Human Body Systems",
+      "description": "Understanding the major systems in the human body",
+      "category": "k12-junior",
+      "grade": "8",
+      "subject": "Science",
+      "type": "Interactive Lesson",
+      "tags": ["biology", "anatomy", "science"],
+      "thumbnail": "🫀",
+      "duration": "50 min"
+    },
+    {
+      "id": "mat-020",
+      "title": "World Capitals Quiz",
+      "description": "Test your knowledge of world capitals and geography",
+      "category": "elementary",
+      "grade": "5",
+      "subject": "Science",
+      "type": "Quiz",
+      "tags": ["geography", "quiz", "world"],
+      "thumbnail": "🗺️",
+      "duration": "20 min"
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+/* Shared Navbar + Footer Component Styles */
+.mock-topnav {
+    width: 100%;
+    position: relative;
+    border: none;
+    background:
+        linear-gradient(120deg, rgba(4, 70, 108, 0.95), rgba(12, 115, 149, 0.92)),
+        url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=1600&q=80') center/cover;
+    box-shadow: 0 10px 26px rgba(8, 39, 62, 0.16);
+    overflow: hidden;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.mock-topnav::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(3, 21, 35, 0.25), rgba(3, 21, 35, 0.08));
+    pointer-events: none;
+}
+
+.topnav-brand,
+.topnav-links a {
+    position: relative;
+    z-index: 1;
+}
+
+.topnav-brand {
+    font-family: 'Manrope', 'Segoe UI', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: #eff9ff;
+    letter-spacing: 0.2px;
+}
+
+.topnav-links {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.topnav-links a {
+    text-decoration: none;
+    color: #d9f1ff;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 6px 10px;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.topnav-links a:hover {
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.13);
+}
+
+.mock-footer {
+    margin-top: 16px;
+    background: #ffffff;
+    border-top: 1px solid #d7e3ec;
+    box-shadow: 0 -8px 20px rgba(8, 39, 62, 0.05);
+}
+
+.footer-content {
+    padding: 16px 20px;
+    color: #58728a;
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 760px) {
+    .mock-topnav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

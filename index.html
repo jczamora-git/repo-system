@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Repository System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="components.css">
+</head>
+<body>
+    <div id="topNavMount"></div>
+
+    <div class="page-shell">
+        <header class="hero">
+            <div class="hero-media" aria-hidden="true">
+                <img class="hero-slide active" src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1600&q=80" alt="">
+                <img class="hero-slide" src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=1600&q=80" alt="">
+                <img class="hero-slide" src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=1600&q=80" alt="">
+                <div class="hero-parallax-layer layer-a"></div>
+                <div class="hero-parallax-layer layer-b"></div>
+            </div>
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <div class="hero-copy">
+                    <p class="hero-kicker">Repository System</p>
+                    <h1>Learning Materials Library</h1>
+                    <p>Discover curated K-12 and ALS resources by category, grade level, and subject.</p>
+                </div>
+                <div class="hero-gallery">
+                    <article class="gallery-card">
+                        <h3>Structured Pathing</h3>
+                        <p>K-12 Senior, K-12 Junior, Elementary, ALS</p>
+                    </article>
+                    <article class="gallery-card">
+                        <h3>Fast Discovery</h3>
+                        <p>Search materials with tags, duration, and type filters</p>
+                    </article>
+                    <article class="gallery-card">
+                        <h3>Ready to Scale</h3>
+                        <p>Data-driven JSON architecture for easy expansion</p>
+                    </article>
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+            <main class="main-panel">
+                <section class="content-header">
+                    <div class="search-bar-container">
+                        <input
+                            type="text"
+                            id="searchInput"
+                            class="search-bar"
+                            placeholder="Search learning materials, subjects, or tags"
+                        >
+                        <span class="search-icon">&#128270;</span>
+                    </div>
+
+                    <div class="filters-container">
+                        <div class="filter-group">
+                            <label for="typeFilter">Type</label>
+                            <select id="typeFilter" class="filter-select">
+                                <option value="">All Types</option>
+                                <option value="Lesson">Lesson</option>
+                                <option value="Interactive Lesson">Interactive Lesson</option>
+                                <option value="Exercise">Exercise</option>
+                                <option value="Quiz">Quiz</option>
+                                <option value="Interactive Game">Interactive Game</option>
+                                <option value="Workshop">Workshop</option>
+                                <option value="Practical Lesson">Practical Lesson</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <label for="durationFilter">Duration</label>
+                            <select id="durationFilter" class="filter-select">
+                                <option value="">Any Duration</option>
+                                <option value="0-30">Under 30 min</option>
+                                <option value="30-50">30-50 min</option>
+                                <option value="50+">Over 50 min</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="tags-section">
+                    <div class="tag-headline">
+                        <h3>Filter by Tags</h3>
+                        <button class="clear-tags-btn" id="clearTagsBtn">Clear Tags</button>
+                    </div>
+                    <div class="tags-list" id="tagsList">
+                        <!-- Tags will be populated by JavaScript -->
+                    </div>
+                </section>
+
+                <section class="materials-section">
+                    <div class="materials-header">
+                        <h2>Learning Materials</h2>
+                        <div class="result-count" id="resultCount">Showing 20 materials</div>
+                    </div>
+
+                    <div class="materials-grid" id="materialsList">
+                        <!-- Materials will be populated by JavaScript -->
+                    </div>
+
+                    <div class="no-results" id="noResults">
+                        <p>No learning materials found.</p>
+                        <p>Try adjusting your search terms or selected filters.</p>
+                    </div>
+                </section>
+            </main>
+
+            <aside class="side-panel">
+                <div class="panel-block">
+                    <h2>Categories</h2>
+                    <div class="categories-list" id="categoriesList">
+                        <!-- Categories will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="panel-block">
+                    <h2>Grade Levels</h2>
+                    <div class="grade-filters" id="gradeFilters">
+                        <!-- Grade filters will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="panel-block">
+                    <h2>Subjects</h2>
+                    <div class="subject-filters" id="subjectFilters">
+                        <!-- Subject filters will be populated by JavaScript -->
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <div id="footerMount"></div>
+
+    <script src="components.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+
+

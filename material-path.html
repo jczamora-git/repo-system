@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Path</title>
+    <link rel="stylesheet" href="view-material.css">
+    <link rel="stylesheet" href="components.css">
+</head>
+<body>
+    <div id="topNavMount"></div>
+
+    <div class="details-shell">
+        <section class="finder-bar" aria-label="Find Material">
+            <a class="back-link" href="index.html">Back to Repository</a>
+            <div class="finder-input-wrap">
+                <input id="pathSearchInput" class="finder-input" type="text" placeholder="Search material in this path" autocomplete="off">
+                <div id="pathSuggestionsPanel" class="suggestions-panel"></div>
+            </div>
+            <button id="pathSearchBtn" class="action-btn primary">Find Material</button>
+        </section>
+
+        <nav id="pathBreadcrumb" class="breadcrumb" aria-label="Breadcrumb"></nav>
+
+        <section class="panel">
+            <div class="list-head">
+                <h2 id="pathTitle">Path Materials</h2>
+                <p id="pathCount" class="list-count">0 materials</p>
+            </div>
+            <div id="pathMaterialsList" class="path-materials-list"></div>
+            <div id="pathEmpty" class="empty-state">No materials found for this path.</div>
+        </section>
+    </div>
+
+    <div id="footerMount"></div>
+
+    <script src="components.js"></script>
+    <script src="material-path.js"></script>
+</body>
+</html>

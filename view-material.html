@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Material</title>
+    <link rel="stylesheet" href="view-material.css">
+    <link rel="stylesheet" href="components.css">
+</head>
+<body>
+    <div id="topNavMount"></div>
+
+    <div class="details-shell">
+        <section class="finder-bar" aria-label="Find Material">
+            <a class="back-link" href="index.html">Back to Repository</a>
+            <div class="finder-input-wrap">
+                <input id="materialSearchInput" class="finder-input" type="text" placeholder="Search another material by title, subject, or tag" autocomplete="off">
+                <div id="suggestionsPanel" class="suggestions-panel"></div>
+            </div>
+            <button id="materialSearchBtn" class="action-btn primary">Find Material</button>
+        </section>
+
+        <nav id="breadcrumb" class="breadcrumb" aria-label="Breadcrumb"></nav>
+
+        <main id="detailsContent" class="details-content">
+            <section class="info-column">
+                <article class="panel material-info" id="materialOverview"></article>
+                <article class="panel" id="descriptionPanel"></article>
+                <article class="panel">
+                    <h3>Learning Outcomes</h3>
+                    <ul id="outcomesList" class="list"></ul>
+                </article>
+                <article class="panel">
+                    <h3>Recommended Articles</h3>
+                    <ul id="recommendedList" class="recommended-list"></ul>
+                </article>
+            </section>
+
+            <aside class="preview-column">
+                <article class="panel preview-panel">
+                    <div class="preview-head">
+                        <h3>File Preview</h3>
+                        <span id="fileTypeBadge" class="file-badge">PDF</span>
+                    </div>
+
+                    <div id="previewMeta" class="preview-meta"></div>
+                    <div id="previewViewport" class="preview-viewport"></div>
+
+                    <div class="preview-actions">
+                        <button id="downloadAction" class="action-btn secondary">Download Material</button>
+                    </div>
+
+                    <h4 class="resources-title">Included Resources</h4>
+                    <ul id="resourcesList" class="list resources-list"></ul>
+                </article>
+            </aside>
+        </main>
+
+        <section id="notFound" class="not-found">
+            <h2>Material not found</h2>
+            <p>The selected material could not be loaded. Return to the repository and try another entry.</p>
+            <a href="index.html" class="action-btn primary">Go Back</a>
+        </section>
+    </div>
+
+    <div id="footerMount"></div>
+
+    <script src="components.js"></script>
+    <script src="view-material.js"></script>
+</body>
+</html>
