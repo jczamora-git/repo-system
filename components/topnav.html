@@ -1,5 +1,8 @@
 ﻿<nav class="mock-topnav">
-    <div class="topnav-brand">Learning Repository</div>
+    <div class="topnav-brand">
+        <img src="AMS-logo.png" alt="AMS Logo" class="topnav-logo">
+        <span class="school-name">Adriatico Memorial School</span>
+    </div>
     <button class="topnav-toggle" id="topnavToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="topnavMenu">
         <span></span>
         <span></span>
@@ -7,11 +10,24 @@
     </button>
     <div class="topnav-menu" id="topnavMenu">
         <div class="topnav-links">
-            <a href="index.html">Home</a>
-            <a href="material-path.html?category=k12-senior">Senior High</a>
-            <a href="material-path.html?category=k12-junior">Junior High</a>
-            <a href="material-path.html?category=elementary">Elementary</a>
-            <a href="material-path.html?category=als">ALS</a>
+            <a href="index.html" class="nav-link">Home</a>
+            
+            <div class="dropdown-container">
+                <button type="button" class="nav-link dropdown-toggle" id="lrmsDropdown" aria-haspopup="true" aria-expanded="false" aria-controls="lrmsMenu">
+                    LRMS
+                    <i class="bi bi-chevron-down" aria-hidden="true"></i>
+                </button>
+                <div class="dropdown-menu" id="lrmsMenu" role="menu" aria-label="LRMS categories">
+                    <!-- Dropdown items will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <a href="#about" class="nav-link">About</a>
+            <a href="#news" class="nav-link">News</a>
+            <a href="#org-chart" class="nav-link">Organizational Chart</a>
+            <a href="#downloads" class="nav-link">Downloadable Files</a>
+            <a href="https://educ-games.example.com" class="nav-link" target="_blank" rel="noopener noreferrer">LMS</a>
+            <a href="#login" class="nav-link login-btn">Login</a>
         </div>
     </div>
 </nav>

@@ -7,12 +7,13 @@
         linear-gradient(120deg, rgba(4, 70, 108, 0.95), rgba(12, 115, 149, 0.92)),
         url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=1600&q=80') center/cover;
     box-shadow: 0 10px 26px rgba(8, 39, 62, 0.16);
-    overflow: hidden;
+    overflow: visible;
     padding: 12px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 12px;
+    z-index: 20;
 }
 
 .mock-topnav::before {
@@ -24,7 +25,7 @@
 }
 
 .topnav-brand,
-.topnav-links a {
+.nav-link {
     position: relative;
     z-index: 1;
 }
@@ -35,12 +36,28 @@
     font-weight: 800;
     color: #eff9ff;
     letter-spacing: 0.2px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.topnav-logo {
+    height: 40px;
+    width: auto;
+    max-width: 50px;
+    object-fit: contain;
+}
+
+.school-name {
+    font-size: 16px;
+    font-weight: 700;
 }
 
 .topnav-links {
     display: flex;
     gap: 14px;
     flex-wrap: wrap;
+    align-items: center;
 }
 
 .topnav-toggle {
@@ -73,7 +90,15 @@
     z-index: 2;
 }
 
-.topnav-links a {
+/* Dropdown Menu Styles */
+.dropdown-container {
+    position: relative;
+}
+
+.nav-link {
+    background: none;
+    border: none;
+    cursor: pointer;
     text-decoration: none;
     color: #d9f1ff;
     font-size: 14px;
@@ -82,12 +107,88 @@
     border-radius: 999px;
     padding: 6px 10px;
     transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    line-height: 1.2;
+    white-space: nowrap;
 }
 
-.topnav-links a:hover {
+.nav-link:hover,
+.nav-link[aria-expanded='true'] {
     color: #ffffff;
     border-color: rgba(255, 255, 255, 0.35);
     background: rgba(255, 255, 255, 0.13);
+}
+
+.dropdown-toggle {
+    position: relative;
+    z-index: 2;
+}
+
+.dropdown-toggle .bi {
+    font-size: 12px;
+    transition: transform 0.2s ease;
+}
+
+.dropdown-toggle[aria-expanded='true'] .bi {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    background: #ffffff;
+    border: 1px solid #c5d7e5;
+    border-radius: 10px;
+    box-shadow: 0 14px 24px rgba(8, 39, 62, 0.18);
+    min-width: 240px;
+    display: none;
+    overflow: hidden;
+    z-index: 25;
+}
+
+.dropdown-menu.active {
+    display: block;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 10px 12px;
+    color: #1e4866;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    border: none;
+    border-bottom: 1px solid #edf3f8;
+    background: #ffffff;
+    border-radius: 0;
+    transition: background 0.2s ease, color 0.2s ease;
+    cursor: pointer;
+    text-align: left;
+    line-height: 1.25;
+}
+
+.dropdown-menu a:hover {
+    background: #eaf5fd;
+    color: #0f4d76;
+    border: none;
+}
+
+.dropdown-menu a:last-child {
+    border-top: none;
+    border-bottom: none;
+}
+
+.login-btn {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.login-btn:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
 }
 
 .mock-footer {
@@ -119,6 +220,14 @@
         font-size: 18px;
     }
 
+    .topnav-logo {
+        height: 32px;
+    }
+
+    .school-name {
+        font-size: 14px;
+    }
+
     .topnav-toggle {
         display: block;
     }
@@ -132,7 +241,8 @@
     }
 
     .mock-topnav.open .topnav-menu {
-        max-height: 280px;
+        max-height: 500px;
+        overflow-y: auto;
     }
 
     .topnav-links {
@@ -143,9 +253,30 @@
         padding-top: 10px;
     }
 
-    .topnav-links a {
+    .topnav-links a,
+    .nav-link {
         width: 100%;
         text-align: left;
         padding: 9px 10px;
+    }
+
+    .dropdown-container {
+        width: 100%;
+    }
+
+    .dropdown-menu {
+        position: static;
+        margin-top: 6px;
+        min-width: auto;
+        border-radius: 10px;
+    }
+
+    .dropdown-menu.active {
+        display: block;
+    }
+
+    .dropdown-menu a {
+        padding: 10px 12px;
+        margin-left: 0;
     }
 }

@@ -28,42 +28,6 @@ body {
         var(--bg);
 }
 
-.mock-topnav {
-    width: 100%;
-    background: #ffffff;
-    border-bottom: 1px solid #d7e3ec;
-    box-shadow: 0 8px 20px rgba(8, 39, 62, 0.06);
-    padding: 12px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-}
-
-.topnav-brand {
-    font-family: 'Manrope', 'Segoe UI', sans-serif;
-    font-size: 20px;
-    font-weight: 800;
-    color: #153b58;
-}
-
-.topnav-links {
-    display: flex;
-    gap: 14px;
-    flex-wrap: wrap;
-}
-
-.topnav-links a {
-    text-decoration: none;
-    color: #2b5b7b;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.topnav-links a:hover {
-    color: #0b4d74;
-}
-
 .details-shell {
     width: 100%;
     padding: 14px 20px 20px;
@@ -613,8 +577,6 @@ body {
 }
 
 @media (max-width: 760px) {
-    .mock-topnav { flex-direction: column; align-items: flex-start; }
-
     .details-shell { padding: 10px; }
 
     .finder-bar {
