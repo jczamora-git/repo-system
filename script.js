@@ -467,12 +467,167 @@ function getGradeSortValue(gradeLabel) {
     return 998;
 }
 
+function escapeHtml(value) {
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 // Setup event listeners
 function setupEventListeners() {
     // Search functionality
-    document.getElementById('searchInput').addEventListener('input', (e) => {
-        selectedFilters.searchTerm = e.target.value.trim().toLowerCase();
+    const searchInput = document.getElementById('searchInput');
+    const suggestionsPanel = document.getElementById('searchSuggestionsPanel');
+    const mobileSearchInput = document.getElementById('mobileUnifiedSearchInput');
+    const mobileSuggestionsPanel = document.getElementById('mobileUnifiedSuggestions');
+
+    const findSearchMatches = (query) => {
+        const q = query.trim().toLowerCase();
+        if (!q) return [];
+
+        return allMaterials.filter((material) => {
+            const searchable = `${material.title} ${material.subject} ${(material.tags || []).join(' ')}`.toLowerCase();
+            return searchable.includes(q);
+        });
+    };
+
+    const navigateToMaterial = (materialId) => {
+        if (!materialId) return;
+        window.location.href = `view-material.html?id=${encodeURIComponent(materialId)}`;
+    };
+
+    const syncSearchTerm = (value, sourceInput) => {
+        selectedFilters.searchTerm = value.trim().toLowerCase();
         applyFilters();
+
+        if (searchInput && sourceInput !== searchInput) {
+            searchInput.value = value;
+        }
+        if (mobileSearchInput && sourceInput !== mobileSearchInput) {
+            mobileSearchInput.value = value;
+        }
+    };
+
+    const setupSuggestionsForInput = (inputEl, panelEl, containerSelector, itemClass, titleClass, metaClass) => {
+        if (!inputEl || !panelEl) {
+            return { hide: () => {} };
+        }
+
+        let activeIndex = -1;
+        let suggestions = [];
+
+        const hide = () => {
+            panelEl.style.display = 'none';
+            panelEl.innerHTML = '';
+            activeIndex = -1;
+            suggestions = [];
+        };
+
+        const applyActive = () => {
+            const items = panelEl.querySelectorAll(`.${itemClass}`);
+            items.forEach((item) => item.classList.remove('active'));
+            if (activeIndex >= 0 && items[activeIndex]) {
+                items[activeIndex].classList.add('active');
+            }
+        };
+
+        const render = (materials) => {
+            suggestions = materials;
+            activeIndex = -1;
+
+            if (materials.length === 0) {
+                hide();
+                return;
+            }
+
+            panelEl.innerHTML = materials
+                .map((material, index) => {
+                    const gradeLabel = getGradeLabel(material);
+                    return `
+                        <button type="button" class="${itemClass}" data-index="${index}" data-id="${material.id}">
+                            <div class="${titleClass}">${escapeHtml(material.title)}</div>
+                            <div class="${metaClass}">${escapeHtml(material.subject)} | ${escapeHtml(gradeLabel)}</div>
+                        </button>
+                    `;
+                })
+                .join('');
+
+            panelEl.style.display = 'block';
+        };
+
+        inputEl.addEventListener('input', (event) => {
+            const value = event.target.value;
+            syncSearchTerm(value, inputEl);
+            render(findSearchMatches(value));
+        });
+
+        inputEl.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowDown') {
+                if (suggestions.length === 0) return;
+                event.preventDefault();
+                activeIndex = (activeIndex + 1) % suggestions.length;
+                applyActive();
+                return;
+            }
+
+            if (event.key === 'ArrowUp') {
+                if (suggestions.length === 0) return;
+                event.preventDefault();
+                activeIndex = activeIndex <= 0 ? suggestions.length - 1 : activeIndex - 1;
+                applyActive();
+                return;
+            }
+
+            if (event.key === 'Enter' && activeIndex >= 0 && suggestions[activeIndex]) {
+                event.preventDefault();
+                navigateToMaterial(suggestions[activeIndex].id);
+                return;
+            }
+
+            if (event.key === 'Escape') {
+                hide();
+            }
+        });
+
+        panelEl.addEventListener('click', (event) => {
+            const suggestion = event.target.closest(`.${itemClass}`);
+            if (!suggestion) return;
+            navigateToMaterial(suggestion.dataset.id);
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!event.target.closest(containerSelector)) {
+                hide();
+            }
+        });
+
+        return { hide };
+    };
+
+    const desktopSearch = setupSuggestionsForInput(
+        searchInput,
+        suggestionsPanel,
+        '.search-bar-container',
+        'search-suggestion-item',
+        'search-suggestion-title',
+        'search-suggestion-meta'
+    );
+
+    const mobileSearch = setupSuggestionsForInput(
+        mobileSearchInput,
+        mobileSuggestionsPanel,
+        '.apple-search-header',
+        'mobile-unified-option',
+        'mobile-unified-option-title',
+        'mobile-unified-option-meta'
+    );
+
+    document.addEventListener('mobileUnifiedSearchClose', () => {
+        desktopSearch.hide();
+        mobileSearch.hide();
     });
 
     // Type filter
@@ -571,6 +726,7 @@ function setupMobileFilterSheet() {
         document.body.classList.remove('mobile-filters-open');
         closeAllMobileCustomSelects();
         toggleBtn.setAttribute('aria-expanded', 'false');
+        document.dispatchEvent(new Event('mobileUnifiedSearchClose'));
     };
 
     if (mobileTagToggleBtn) {

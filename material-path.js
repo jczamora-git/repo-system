@@ -40,12 +40,13 @@ const gradeMapByCategory = {
     ]
 };
 
-function buildPathHref(category, grade, subject, track) {
+function buildPathHref(category, grade, subject, track, tag) {
     const params = new URLSearchParams();
     if (track && !category) params.set('track', track);
     if (category) params.set('category', category);
     if (grade) params.set('grade', grade);
     if (subject) params.set('subject', subject);
+    if (tag) params.set('tag', tag);
     return `material-path.html?${params.toString()}`;
 }
 
@@ -64,7 +65,7 @@ function getGradeOptions(categoryId, track) {
     return [];
 }
 
-function getPathSegments(category, grade, subject, track) {
+function getPathSegments(category, grade, subject, track, tag) {
     const segments = [];
 
     if (track === 'k12' && !category) {
@@ -90,12 +91,16 @@ function getPathSegments(category, grade, subject, track) {
     if (grade) {
         segments.push({
             label: grade,
-            href: buildPathHref(category, grade, '', track)
+            href: buildPathHref(category, grade, '', track, '')
         });
     }
 
     if (subject) {
-        segments.push({ label: subject, href: buildPathHref(category, grade, subject, track), current: true });
+        segments.push({ label: subject, href: buildPathHref(category, grade, subject, track, ''), current: !tag });
+    }
+
+    if (tag) {
+        segments.push({ label: `#${tag}`, href: buildPathHref(category, grade, subject, track, tag), current: true });
     } else if (segments.length > 0) {
         segments[segments.length - 1].current = true;
     }
@@ -107,9 +112,9 @@ function getPathSegments(category, grade, subject, track) {
     return segments;
 }
 
-function renderBreadcrumb(category, grade, subject, track) {
+function renderBreadcrumb(category, grade, subject, track, tag) {
     const container = document.getElementById('pathBreadcrumb');
-    const segments = getPathSegments(category, grade, subject, track);
+    const segments = getPathSegments(category, grade, subject, track, tag);
 
     container.innerHTML = segments
         .map((segment, index) => {
@@ -122,16 +127,17 @@ function renderBreadcrumb(category, grade, subject, track) {
         .join('');
 }
 
-function renderBreadcrumbFilters(categories, allMaterials, currentCategory, currentGrade, currentSubject, currentTrack) {
+function renderBreadcrumbFilters(categories, allMaterials, currentCategory, currentGrade, currentSubject, currentTrack, currentTag) {
     const categoryContainer = document.getElementById('pathBreadcrumbCategories');
     const gradeContainer = document.getElementById('pathBreadcrumbGrades');
     const subjectContainer = document.getElementById('pathBreadcrumbSubjects');
+    const tagContainer = document.getElementById('pathBreadcrumbTags');
 
-    if (!categoryContainer || !gradeContainer || !subjectContainer) return;
+    if (!categoryContainer || !gradeContainer || !subjectContainer || !tagContainer) return;
 
     categoryContainer.innerHTML = categories
         .map((category) => {
-            const href = buildPathHref(category.id, '', '', '');
+            const href = buildPathHref(category.id, '', '', '', '');
             const activeClass = category.id === currentCategory ? ' active' : '';
             return `<a class="breadcrumb-tag${activeClass}" href="${href}">${escapeHtml(category.name)}</a>`;
         })
@@ -140,7 +146,7 @@ function renderBreadcrumbFilters(categories, allMaterials, currentCategory, curr
     const gradeOptions = getGradeOptions(currentCategory, currentTrack);
     gradeContainer.innerHTML = gradeOptions
         .map((grade) => {
-            const href = buildPathHref(currentCategory, grade.value, '', currentTrack);
+            const href = buildPathHref(currentCategory, grade.value, '', currentTrack, '');
             const activeClass = grade.value === currentGrade ? ' active' : '';
             return `<a class="breadcrumb-tag${activeClass}" href="${href}">${escapeHtml(grade.label)}</a>`;
         })
@@ -157,9 +163,27 @@ function renderBreadcrumbFilters(categories, allMaterials, currentCategory, curr
     const subjects = Array.from(subjectSet).sort();
     subjectContainer.innerHTML = subjects
         .map((subject) => {
-            const href = buildPathHref(currentCategory, currentGrade, subject, currentTrack);
+            const href = buildPathHref(currentCategory, currentGrade, subject, currentTrack, '');
             const activeClass = subject === currentSubject ? ' active' : '';
             return `<a class="breadcrumb-tag${activeClass}" href="${href}">${escapeHtml(subject)}</a>`;
+        })
+        .join('');
+
+    const tagSet = new Set(
+        allMaterials
+            .filter((item) => !currentTrack || currentTrack !== 'k12' || (item.category === 'k12-senior' || item.category === 'k12-junior'))
+            .filter((item) => !currentCategory || item.category === currentCategory)
+            .filter((item) => !currentGrade || getGradeLabel(item) === currentGrade)
+            .filter((item) => !currentSubject || item.subject === currentSubject)
+            .flatMap((item) => item.tags || [])
+    );
+
+    const tags = Array.from(tagSet).sort((a, b) => a.localeCompare(b));
+    tagContainer.innerHTML = tags
+        .map((tag) => {
+            const href = buildPathHref(currentCategory, currentGrade, currentSubject, currentTrack, tag);
+            const activeClass = tag === currentTag ? ' active' : '';
+            return `<a class="breadcrumb-tag${activeClass}" href="${href}">${escapeHtml(tag)}</a>`;
         })
         .join('');
 }
@@ -187,7 +211,7 @@ function setupBreadcrumbMoreToggle(toggleId, panelId) {
     });
 }
 
-function matchFilters(material, category, grade, subject, track) {
+function matchFilters(material, category, grade, subject, track, tag) {
     if (track === 'k12' && !(material.category === 'k12-senior' || material.category === 'k12-junior')) {
         return false;
     }
@@ -204,31 +228,36 @@ function matchFilters(material, category, grade, subject, track) {
         return false;
     }
 
+    if (tag) {
+        const match = (material.tags || []).some((itemTag) => String(itemTag).toLowerCase() === tag.toLowerCase());
+        if (!match) {
+            return false;
+        }
+    }
+
     return true;
 }
 
-function buildTitle(category, grade, subject, track) {
+function buildTitle(category, grade, subject, track, tag) {
+    let baseTitle = 'Path Materials';
+
     if (subject && grade && category === 'k12-senior') {
-        return `K-12 / Senior High / ${grade} / ${subject}`;
+        baseTitle = `K-12 / Senior High / ${grade} / ${subject}`;
+    } else if (subject && grade && category === 'k12-junior') {
+        baseTitle = `K-12 / Junior High / ${grade} / ${subject}`;
+    } else if (subject && grade && category === 'elementary') {
+        baseTitle = `Elementary / ${grade} / ${subject}`;
+    } else if (subject && category === 'als') {
+        baseTitle = `ALS / ${subject}`;
+    } else if (track === 'k12') {
+        baseTitle = 'K-12 Materials';
     }
 
-    if (subject && grade && category === 'k12-junior') {
-        return `K-12 / Junior High / ${grade} / ${subject}`;
+    if (!tag) {
+        return baseTitle;
     }
 
-    if (subject && grade && category === 'elementary') {
-        return `Elementary / ${grade} / ${subject}`;
-    }
-
-    if (subject && category === 'als') {
-        return `ALS / ${subject}`;
-    }
-
-    if (track === 'k12') {
-        return 'K-12 Materials';
-    }
-
-    return 'Path Materials';
+    return `${baseTitle} / #${tag}`;
 }
 
 function renderMaterials(list) {
@@ -385,6 +414,7 @@ async function initPathPage() {
     const grade = params.get('grade') || '';
     const subject = params.get('subject') || '';
     const track = params.get('track') || '';
+    const tag = params.get('tag') || '';
 
     try {
         const response = await fetch('data.json');
@@ -392,12 +422,12 @@ async function initPathPage() {
         const allMaterials = data.materials || [];
         const categories = data.categories || [];
 
-        const filtered = allMaterials.filter((material) => matchFilters(material, category, grade, subject, track));
+        const filtered = allMaterials.filter((material) => matchFilters(material, category, grade, subject, track, tag));
 
-        renderBreadcrumb(category, grade, subject, track);
-        renderBreadcrumbFilters(categories, allMaterials, category, grade, subject, track);
+        renderBreadcrumb(category, grade, subject, track, tag);
+        renderBreadcrumbFilters(categories, allMaterials, category, grade, subject, track, tag);
         setupBreadcrumbMoreToggle('pathBreadcrumbToggle', 'pathBreadcrumbMore');
-        document.getElementById('pathTitle').textContent = buildTitle(category, grade, subject, track);
+        document.getElementById('pathTitle').textContent = buildTitle(category, grade, subject, track, tag);
         renderMaterials(filtered);
         initPathFinder(allMaterials, filtered);
     } catch (error) {

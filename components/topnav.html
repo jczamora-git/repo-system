@@ -1,13 +1,21 @@
 ﻿<nav class="mock-topnav">
-    <div class="topnav-brand">
-        <img src="AMS-logo.png" alt="AMS Logo" class="topnav-logo">
-        <span class="school-name">Adriatico Memorial School</span>
+    <div class="topnav-main">
+        <button type="button" class="topnav-toggle" id="topnavToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="topnavMenu">
+            <i class="bi bi-list" aria-hidden="true"></i>
+        </button>
+        <div class="topnav-brand">
+            <img src="AMS-logo.png" alt="AMS Logo" class="topnav-logo">
+            <span class="school-name">Adriatico Memorial School</span>
+        </div>
     </div>
-    <button class="topnav-toggle" id="topnavToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="topnavMenu">
-        <span></span>
-        <span></span>
-        <span></span>
-    </button>
+    <div class="topnav-mobile-tools" aria-label="Mobile tools">
+        <div class="topnav-mobile-search" id="topnavMobileSearch">
+            <button type="button" class="topnav-icon-btn" id="topnavSearchToggle" aria-label="Toggle search" aria-expanded="false" aria-controls="topnavSearchInput">
+                <i class="bi bi-search" aria-hidden="true"></i>
+            </button>
+            <input type="search" id="topnavSearchInput" class="topnav-search-input" placeholder="Search materials" autocomplete="off">
+        </div>
+    </div>
     <div class="topnav-menu" id="topnavMenu">
         <div class="topnav-links">
             <a href="index.html" class="nav-link">Home</a>
@@ -15,9 +23,9 @@
             <div class="dropdown-container">
                 <button type="button" class="nav-link dropdown-toggle" id="lrmsDropdown" aria-haspopup="true" aria-expanded="false" aria-controls="lrmsMenu">
                     LRMS
-                    <i class="bi bi-chevron-down" aria-hidden="true"></i>
+                    <i class="bi bi-caret-down-fill" aria-hidden="true"></i>
                 </button>
-                <div class="dropdown-menu" id="lrmsMenu" role="menu" aria-label="LRMS categories">
+                <div class="dropdown-menu" id="lrmsMenu" role="menu" aria-label="LRMS categories" hidden>
                     <!-- Dropdown items will be populated by JavaScript -->
                 </div>
             </div>

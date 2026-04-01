@@ -306,11 +306,12 @@ function renderBreadcrumb(material) {
         .join('');
 }
 
-function buildPathHref(category, grade, subject) {
+function buildPathHref(category, grade, subject, tag) {
     const params = new URLSearchParams();
     if (category) params.set('category', category);
     if (grade) params.set('grade', grade);
     if (subject) params.set('subject', subject);
+    if (tag) params.set('tag', tag);
     return `material-path.html?${params.toString()}`;
 }
 
@@ -322,16 +323,18 @@ function renderBreadcrumbFilters(categories, allMaterials, material) {
     const categoryContainer = document.getElementById('breadcrumbCategories');
     const gradeContainer = document.getElementById('breadcrumbGrades');
     const subjectContainer = document.getElementById('breadcrumbSubjects');
+    const tagContainer = document.getElementById('breadcrumbTags');
 
-    if (!categoryContainer || !gradeContainer || !subjectContainer) return;
+    if (!categoryContainer || !gradeContainer || !subjectContainer || !tagContainer) return;
 
     const selectedCategory = material.category;
     const selectedGrade = getGradeLabel(material);
     const selectedSubject = material.subject;
+    const selectedTag = new URLSearchParams(window.location.search).get('tag') || '';
 
     categoryContainer.innerHTML = categories
         .map((category) => {
-            const href = buildPathHref(category.id);
+            const href = buildPathHref(category.id, '', '', '');
             const activeClass = category.id === selectedCategory ? ' active' : '';
             return `<a class="breadcrumb-tag${activeClass}" href="${href}">${escapeHtml(category.name)}</a>`;
         })
@@ -340,7 +343,7 @@ function renderBreadcrumbFilters(categories, allMaterials, material) {
     const gradeOptions = getGradeOptions(selectedCategory);
     gradeContainer.innerHTML = gradeOptions
         .map((grade) => {
-            const href = buildPathHref(selectedCategory, grade.value);
+            const href = buildPathHref(selectedCategory, grade.value, '', '');
             const activeClass = grade.value === selectedGrade ? ' active' : '';
             return `<a class="breadcrumb-tag${activeClass}" href="${href}">${escapeHtml(grade.label)}</a>`;
         })
@@ -356,9 +359,26 @@ function renderBreadcrumbFilters(categories, allMaterials, material) {
     const subjects = Array.from(subjectSet).sort();
     subjectContainer.innerHTML = subjects
         .map((subject) => {
-            const href = buildPathHref(selectedCategory, selectedGrade, subject);
+            const href = buildPathHref(selectedCategory, selectedGrade, subject, '');
             const activeClass = subject === selectedSubject ? ' active' : '';
             return `<a class="breadcrumb-tag${activeClass}" href="${href}">${escapeHtml(subject)}</a>`;
+        })
+        .join('');
+
+    const tagSet = new Set(
+        allMaterials
+            .filter((item) => item.category === selectedCategory)
+            .filter((item) => !selectedGrade || getGradeLabel(item) === selectedGrade)
+            .filter((item) => !selectedSubject || item.subject === selectedSubject)
+            .flatMap((item) => item.tags || [])
+    );
+
+    const tags = Array.from(tagSet).sort((a, b) => a.localeCompare(b));
+    tagContainer.innerHTML = tags
+        .map((tag) => {
+            const href = buildPathHref(selectedCategory, selectedGrade, selectedSubject, tag);
+            const activeClass = tag === selectedTag ? ' active' : '';
+            return `<a class="breadcrumb-tag${activeClass}" href="${href}">${escapeHtml(tag)}</a>`;
         })
         .join('');
 }

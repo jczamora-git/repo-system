@@ -56,6 +56,7 @@
                                 placeholder="Search learning materials, subjects, or tags"
                             >
                             <span class="search-icon"><i class="bi bi-search" aria-hidden="true"></i></span>
+                            <div id="searchSuggestionsPanel" class="search-suggestions-panel"></div>
                         </div>
                         <button id="mobileFilterToggle" class="mobile-filter-toggle" aria-label="Open filters" aria-expanded="false">
                             <i class="bi bi-sliders2" aria-hidden="true"></i>
@@ -103,9 +104,13 @@
 
                 <div id="mobileFilterBackdrop" class="mobile-filter-backdrop"></div>
                 <section id="mobileFiltersSheet" class="mobile-filters-sheet" aria-label="Mobile Filters">
-                    <div class="mobile-sheet-header">
-                        <h3>Filters</h3>
-                        <button id="mobileFilterClose" class="mobile-sheet-close" aria-label="Close filters"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+                    <div class="mobile-sheet-header apple-search-header">
+                        <button id="mobileFilterClose" class="mobile-sheet-close" aria-label="Close search and filters"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+                        <div class="mobile-unified-search-wrap">
+                            <span class="mobile-unified-search-icon" aria-hidden="true"><i class="bi bi-search"></i></span>
+                            <input id="mobileUnifiedSearchInput" type="search" class="mobile-unified-search-input" placeholder="Search" autocomplete="off">
+                        </div>
+                        <div id="mobileUnifiedSuggestions" class="mobile-unified-suggestions"></div>
                     </div>
 
                     <div class="mobile-sheet-content">
