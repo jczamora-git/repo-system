@@ -1042,10 +1042,6 @@ body.tags-visible .tags-section {
         margin-top: 4px;
     }
 
-    #mobileFiltersSheet .mobile-sheet-content {
-        display: none;
-    }
-
     #mobileTagsList {
         display: none;
     }
